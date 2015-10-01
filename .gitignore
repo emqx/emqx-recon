@@ -1,1 +1,14 @@
 .rebar
+.eunit
+deps
+!deps/.placeholder
+*.o
+*.beam
+*.plt
+erl_crash.dump
+ebin
+!ebin/.placeholder
+.exrc
+log/
+*.swp
+*.so
