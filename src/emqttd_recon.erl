@@ -34,12 +34,40 @@
 load() ->
     emqttd_ctl:register_cmd(recon, {?MODULE, cli}, []).
 
+cli(["memory"]) ->
+    Print = fun(Key, Keyword) ->
+            ?PRINT("~-20s: ~w~p", [concat(Key, Keyword),
+                                   recon_alloc:memory(Key, Keyword)])
+    end,
+    [Print(Key, Keyword) || Key <- [usage, used, allocated, unused],
+                            Keyword <- [cuurent, max]];
+
+cli(["allocated"]) ->
+    Print = fun(Key, Keyword, Val) ->
+            ?PRINT("~-20s: ~w~p", [concat(Key, Keyword), Val)
+    end,
+    [Print(Key, Keyword, Val) || Keyword <- [current, max],
+                                 {Key, Val} <- recon_alloc:memory(allocated_types, Keyword)];
+
 cli(["bin_leak"]) ->
-    cli(["bin_leak", "100"]); 
-cli(["bin_leak", N]) ->
-    recon:bin_leak(list_to_integer(N));
+    [?PRINT("~p~n", [Row]) || Row <- recon:bin_leak(100)];
+
+cli(["node_stats"]) ->
+    recon:node_stats_print(10, 1000);
+
+cli(["remote_load", Mod]) ->
+    ?PRINT("~p~n", [recon:remote_load(Mod)]);
+
 cli(_) ->
-    ?USAGE([{"recon", "recon bin_leak N"}]).
+    ?USAGE([{"recon memory",          "recon_alloc:memory/2"},
+            {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
+            {"recon bin_leak",        "recon:bin_leak(100)"},
+            {"recon node_stats",      "recon:node_stats(10, 1000)"},
+            {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
 
 unload() ->
     emqttd_ctl:unregister_cmd(recon).
+
+concat(Key, Keyword) ->
+    lists:concat([atom_to_list(Key), "/", atom_to_list(Keyword)]).
+
