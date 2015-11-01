@@ -29,7 +29,7 @@
 
 -author("Feng Lee <feng@emqtt.io>").
 
--include_lib("emqttd/include/emqttd_cli.hrl").
+-include("../../../include/emqttd_cli.hrl").
 
 -export([load/0, cli/1, unload/0]).
 
