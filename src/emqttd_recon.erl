@@ -15,7 +15,6 @@
 %%--------------------------------------------------------------------
 
 %% @doc Recon CLI
-%% @author Feng Lee <feng@emqtt.io>
 -module(emqttd_recon).
 
 -include("../../../include/emqttd_cli.hrl").

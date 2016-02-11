@@ -15,7 +15,6 @@
 %%--------------------------------------------------------------------
 
 %% @doc emqttd recon plugin
-%% @author Feng Lee <feng@emqtt.io>
 -module(emqttd_recon_app).
 
 -behaviour(application).
