@@ -14,3 +14,4 @@ log/
 *.so
 .erlang.mk/
 emqttd_recon.d
+logs/
