@@ -18,15 +18,23 @@
 
 -compile(export_all).
 
-all() -> [{group, cli}].
+all() -> [{group, app}, {group, cli}].
 
-groups() -> [{cli, [], [
+groups() -> [{app, [], [
+                app_start]},
+             {cli, [], [
                 cli_memory,
                 cli_allocated,
                 cli_bin_leak,
                 cli_node_stats,
-                cli_remote_load]}
+                cli_remote_load,
+                cli_usage]}
             ].
+
+app_start(_) ->
+    ok = application:start(recon),
+    ok = application:start(emqttd_recon),
+    ok = application:stop(emqttd_recon).
 
 cli_memory(_) ->
     emqttd_recon:cli(["memory"]).
@@ -42,4 +50,7 @@ cli_node_stats(_) ->
 
 cli_remote_load(_) ->
     emqttd_recon:cli(["remote_load", "emqttd_recon"]).
+
+cli_usage(_) ->
+    emqttd_recon:cli(["usage"]).
 

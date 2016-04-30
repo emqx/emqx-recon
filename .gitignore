@@ -15,3 +15,6 @@ log/
 .erlang.mk/
 emqttd_recon.d
 logs/
+ct.coverdata
+test/ct.cover.spec
+
