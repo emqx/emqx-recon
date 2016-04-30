@@ -17,7 +17,7 @@
 %% @doc Recon CLI
 -module(emqttd_recon).
 
--include("../../../include/emqttd_cli.hrl").
+-include_lib("emqttd/include/emqttd_cli.hrl").
 
 -export([load/0, cli/1, unload/0]).
 

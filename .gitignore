@@ -12,3 +12,5 @@ ebin
 log/
 *.swp
 *.so
+.erlang.mk/
+emqttd_recon.d
