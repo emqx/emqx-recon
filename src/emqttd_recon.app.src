@@ -1,6 +1,6 @@
 {application, emqttd_recon,
  [{description, "emqttd recon plugin"},
-  {vsn, "1.0"},
+  {vsn, "1.1"},
   {modules, []},
   {registered, []},
   {applications, [
