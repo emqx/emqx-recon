@@ -1,14 +1,18 @@
-# emqttd_recon
+
+emqttd_recon
+============
 
 Recon debug/optimize plugin
 
-## Load
+Load the Plugin
+---------------
 
 ```
 ./bin/emqttd_ctl plugins load emqttd_recon
 ```
 
-## Commands
+Commands
+--------
 
 ```
 ./bin/emqttd_ctl recon
@@ -20,7 +24,13 @@ recon node_stats                        #recon:node_stats(10, 1000)
 recon remote_load Mod                   #recon:remote_load(Mod)
 ```
 
-## Author
+GC
+--
 
-Contact <feng@emqtt.io> if any issues.
+When the plugin is loaded, global GC will run periodically.
+
+Author
+------
+
+Feng Lee <feng@emqtt.io>
 
