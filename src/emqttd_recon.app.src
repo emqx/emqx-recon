@@ -1,8 +1,8 @@
 {application, emqttd_recon,
  [{description, "emqttd recon plugin"},
-  {vsn, "1.0"},
+  {vsn, "2.0"},
   {modules, []},
-  {registered, []},
+  {registered, [emqttd_recon_gc]},
   {applications, [
                   kernel,
                   stdlib,

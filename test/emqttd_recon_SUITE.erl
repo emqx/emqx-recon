@@ -1,5 +1,5 @@
 %%--------------------------------------------------------------------
-%% Copyright (c) 2015-2016 Feng Lee <feng@emqtt.io>.
+%% Copyright (c) 2016 Feng Lee <feng@emqtt.io>. All Rights Reserved.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -18,39 +18,48 @@
 
 -compile(export_all).
 
-all() -> [{group, app}, {group, cli}].
+all() ->
+    [{group, cli}, {group, gc}].
 
-groups() -> [{app, [], [
-                app_start]},
-             {cli, [], [
-                cli_memory,
-                cli_allocated,
-                cli_bin_leak,
-                cli_node_stats,
-                cli_remote_load,
-                cli_usage]}
-            ].
+groups() ->
+    [{cli, [sequence],
+      [cli_memory,
+       cli_allocated,
+       cli_bin_leak,
+       cli_node_stats,
+       cli_remote_load,
+       cli_usage]},
+     {gc, [sequence],
+      [gc_run]}
+    ].
 
-app_start(_) ->
-    ok = application:start(recon),
-    ok = application:start(emqttd_recon),
-    ok = application:stop(emqttd_recon).
+init_per_suite(Config) ->
+    [{ok, _} = application:ensure_all_started(App) || App <- [lager, emqttd, emqttd_recon]],
+    Config.
+
+end_per_suite(_Config) ->
+    application:stop(emqttd_recon),
+    application:stop(emqttd).
 
 cli_memory(_) ->
-    emqttd_recon:cli(["memory"]).
+    emqttd_recon_cli:cmd(["memory"]).
 
 cli_allocated(_) ->
-    emqttd_recon:cli(["allocated"]).
+    emqttd_recon_cli:cmd(["allocated"]).
     
 cli_bin_leak(_) ->
-    emqttd_recon:cli(["bin_leak"]).
+    emqttd_recon_cli:cmd(["bin_leak"]).
 
 cli_node_stats(_) ->
-    emqttd_recon:cli(["node_stats"]).
+    emqttd_recon_cli:cmd(["node_stats"]).
 
 cli_remote_load(_) ->
-    emqttd_recon:cli(["remote_load", "emqttd_recon"]).
+    emqttd_recon_cli:cmd(["remote_load", "emqttd_recon_gc"]).
 
 cli_usage(_) ->
-    emqttd_recon:cli(["usage"]).
+    emqttd_recon_cli:cmd(["usage"]).
+
+gc_run(_) ->
+    {ok, Micros} = emqttd_recon_gc:run(),
+    io:format("GC: ~p~n", [Micros]).
 
