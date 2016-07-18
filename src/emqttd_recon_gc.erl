@@ -45,7 +45,7 @@ run() ->
 %%--------------------------------------------------------------------
 
 init([]) ->
-    case application:get_env(emqttd_recon, gc_interval) of
+    case gen_conf:value(emqttd_recon, gc_interval) of
         {ok, Secs} -> {ok, schedule_gc(#state{interval = Secs * 1000})};
         undefined  -> {ok, #state{}}
     end.

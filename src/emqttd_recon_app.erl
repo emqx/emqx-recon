@@ -28,6 +28,7 @@
 %%--------------------------------------------------------------------
 
 start(_StartType, _StartArgs) ->
+    gen_conf:init(emqttd_recon),
     emqttd_recon_cli:load(),
     emqttd_recon_sup:start_link().
 
