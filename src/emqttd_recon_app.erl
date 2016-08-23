@@ -23,12 +23,14 @@
 %% Application callbacks
 -export([start/2, stop/1]).
 
+-define(APP, emqttd_recon).
+
 %%--------------------------------------------------------------------
 %% Application callbacks
 %%--------------------------------------------------------------------
 
 start(_StartType, _StartArgs) ->
-    gen_conf:init(emqttd_recon),
+    gen_conf:init(?APP),
     emqttd_recon_cli:load(),
     emqttd_recon_sup:start_link().
 
