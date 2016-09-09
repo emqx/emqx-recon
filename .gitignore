@@ -12,3 +12,11 @@ ebin
 log/
 *.swp
 *.so
+.erlang.mk/
+emqttd_recon.d
+logs/
+ct.coverdata
+test/ct.cover.spec
+.idea/
+emqttd_recon.iml
+Mnesia.nonode@nohost/

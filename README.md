@@ -24,6 +24,11 @@ recon node_stats                        #recon:node_stats(10, 1000)
 recon remote_load Mod                   #recon:remote_load(Mod)
 ```
 
+GC
+--
+
+When the plugin is loaded, global GC will run periodically.
+
 Author
 ------
 

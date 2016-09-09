@@ -1,5 +1,5 @@
 %%--------------------------------------------------------------------
-%% Copyright (c) 2015-2016 Feng Lee <feng@emqtt.io>.
+%% Copyright (c) 2016 Feng Lee <feng@emqtt.io>. All Rights Reserved.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -15,16 +15,18 @@
 %%--------------------------------------------------------------------
 
 %% @doc Recon CLI
--module(emqttd_recon).
+-module(emqttd_recon_cli).
 
--include("../../../include/emqttd_cli.hrl").
+-author("Feng Lee <feng@emqtt.io>").
 
--export([load/0, cli/1, unload/0]).
+-include_lib("emqttd/include/emqttd_cli.hrl").
+
+-export([load/0, cmd/1, unload/0]).
 
 load() ->
-    emqttd_ctl:register_cmd(recon, {?MODULE, cli}, []).
+    emqttd_ctl:register_cmd(recon, {?MODULE, cmd}, []).
 
-cli(["memory"]) ->
+cmd(["memory"]) ->
     Print = fun(Key, Keyword) ->
                 ?PRINT("~-20s: ~w~n", [concat(Key, Keyword),
                                        recon_alloc:memory(Key, Keyword)])
@@ -32,7 +34,7 @@ cli(["memory"]) ->
     [Print(Key, Keyword) || Key <- [usage, used, allocated, unused],
                             Keyword <- [current, max]];
 
-cli(["allocated"]) ->
+cmd(["allocated"]) ->
     Print = fun(Keyword, Key, Val) ->
                 ?PRINT("~-20s: ~w~n", [concat(Key, Keyword), Val])
             end,
@@ -40,16 +42,16 @@ cli(["allocated"]) ->
     [Print(Keyword, Key, Val) || Keyword <- [current, max],
                                  {Key, Val} <- Alloc(Keyword)];
 
-cli(["bin_leak"]) ->
+cmd(["bin_leak"]) ->
     [?PRINT("~p~n", [Row]) || Row <- recon:bin_leak(100)];
 
-cli(["node_stats"]) ->
+cmd(["node_stats"]) ->
     recon:node_stats_print(10, 1000);
 
-cli(["remote_load", Mod]) ->
+cmd(["remote_load", Mod]) ->
     ?PRINT("~p~n", [recon:remote_load(list_to_atom(Mod))]);
 
-cli(_) ->
+cmd(_) ->
     ?USAGE([{"recon memory",          "recon_alloc:memory/2"},
             {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
             {"recon bin_leak",        "recon:bin_leak(100)"},
