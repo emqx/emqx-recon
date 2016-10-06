@@ -20,3 +20,4 @@ test/ct.cover.spec
 .idea/
 emqttd_recon.iml
 Mnesia.nonode@nohost/
+data/
