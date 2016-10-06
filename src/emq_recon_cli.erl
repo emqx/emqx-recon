@@ -14,8 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
-%% @doc Recon CLI
--module(emqttd_recon_cli).
+-module(emq_recon_cli).
 
 -author("Feng Lee <feng@emqtt.io>").
 

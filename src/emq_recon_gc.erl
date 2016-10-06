@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqttd_recon_gc).
+-module(emq_recon_gc).
 
 -author("Feng Lee <feng@emqtt.io>").
 
@@ -45,7 +45,7 @@ run() ->
 %%--------------------------------------------------------------------
 
 init([]) ->
-    case gen_conf:value(emqttd_recon, gc_interval) of
+    case application:get_env(emq_recon, gc_interval) of
         {ok, Secs} -> {ok, schedule_gc(#state{interval = Secs * 1000})};
         undefined  -> {ok, #state{}}
     end.
