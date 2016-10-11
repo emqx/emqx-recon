@@ -1,5 +1,5 @@
 
-{mapping, "emq.recon.gc_interval", "emq_recon.gc_interval", [
+{mapping, "recon.gc_interval", "emq_recon.gc_interval", [
   {default, 600},
   {datatype, integer}
 ]}.
