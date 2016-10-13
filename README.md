@@ -8,7 +8,7 @@ Load the Plugin
 ---------------
 
 ```
-./bin/emqttd_ctl plugins load emqttd_recon
+./bin/emqttd_ctl plugins load emq_recon
 ```
 
 Commands

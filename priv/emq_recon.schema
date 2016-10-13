@@ -1,4 +1,5 @@
-
+%%-*- mode: erlang -*-
+%% emq_recon config mapping
 {mapping, "recon.gc_interval", "emq_recon.gc_interval", [
   {default, 600},
   {datatype, integer}
