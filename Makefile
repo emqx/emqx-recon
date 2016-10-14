@@ -1,5 +1,5 @@
 PROJECT = emq_recon
-PROJECT_DESCRIPTION = Recon Plugin for EMQ Broker
+PROJECT_DESCRIPTION = EMQ Recon Plugin
 PROJECT_VERSION = 3.0
 
 DEPS = recon
