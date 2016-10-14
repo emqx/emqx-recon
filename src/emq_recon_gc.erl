@@ -21,7 +21,7 @@
 -behaviour(gen_server).
 
 %% API.
--export([start_link/1, run/0]).
+-export([start_link/0, run/0]).
 
 %% gen_server.
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -33,9 +33,9 @@
 %% Start the gc
 %%--------------------------------------------------------------------
 
--spec(start_link([{atom(), term()}]) -> {ok, pid()}).
-start_link(Env) ->
-	gen_server:start_link({local, ?MODULE}, ?MODULE, [Env], []).
+-spec(start_link() -> {ok, pid()}).
+start_link() ->
+	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 run() ->
     gen_server:call(?MODULE, run).
@@ -44,8 +44,8 @@ run() ->
 %% gen_server callbacks
 %%--------------------------------------------------------------------
 
-init([Env]) ->
-    case proplists:get_value(gc_interval, Env) of
+init([]) ->
+    case application:get_env(emq_recon, gc_interval) of
         {ok, Secs} -> {ok, schedule_gc(#state{interval = Secs * 1000})};
         undefined  -> {ok, #state{}}
     end.
