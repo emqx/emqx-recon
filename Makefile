@@ -10,7 +10,7 @@ BUILD_DEPS = emqttd
 dep_emqttd = git https://github.com/emqtt/emqttd master
 
 TEST_DEPS = cuttlefish
-dep_cuttlefish = git https://github.com/basho/cuttlefish master
+dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 CT_SUITES = emqttd_recon
 CT_OPTS = -erl_args -config test/config/sys.config
