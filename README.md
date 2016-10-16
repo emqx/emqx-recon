@@ -29,6 +29,11 @@ GC
 
 When the plugin is loaded, global GC will run periodically.
 
+License
+-------
+
+Apache License Version 2.0
+
 Author
 ------
 

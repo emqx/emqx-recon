@@ -1,13 +1,13 @@
 PROJECT = emq_recon
-PROJECT_DESCRIPTION = EMQ Recon Plugin
-PROJECT_VERSION = 3.0
+PROJECT_DESCRIPTION = Recon Plugin
+PROJECT_VERSION = 2.0
 
 DEPS = recon
 
 dep_recon = git https://github.com/ferd/recon 2.2.1
 
 BUILD_DEPS = emqttd
-dep_emqttd = git https://github.com/emqtt/emqttd master
+dep_emqttd = git https://github.com/emqtt/emqttd emq20
 
 TEST_DEPS = cuttlefish
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
