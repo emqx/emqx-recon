@@ -8,7 +8,7 @@ Load the Plugin
 ---------------
 
 ```
-./bin/emqttd_ctl plugins load emqttd_recon
+./bin/emqttd_ctl plugins load emq_recon
 ```
 
 Commands
@@ -28,6 +28,11 @@ GC
 --
 
 When the plugin is loaded, global GC will run periodically.
+
+License
+-------
+
+Apache License Version 2.0
 
 Author
 ------

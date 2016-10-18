@@ -14,21 +14,25 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqttd_recon_sup).
+-module(emq_recon_app).
 
 -author("Feng Lee <feng@emqtt.io>").
 
--behaviour(supervisor).
+-behaviour(application).
 
--export([start_link/0]).
+%% Application callbacks
+-export([start/2, stop/1]).
 
--export([init/1]).
+-define(APP, emqttd_recon).
 
--define(CHILD(I), {I, {I, start_link, []}, permanent, 5000, worker, [I]}).
+%%--------------------------------------------------------------------
+%% Application callbacks
+%%--------------------------------------------------------------------
 
-start_link() ->
-	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+start(_StartType, _StartArgs) ->
+    emq_recon_cli:load(),
+    emq_recon_sup:start_link().
 
-init([]) ->
-	{ok, {{one_for_one, 10, 100}, [?CHILD(emqttd_recon_gc)]}}.
+stop(_State) ->
+    emq_recon_cli:unload().
 
