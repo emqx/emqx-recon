@@ -1,6 +1,6 @@
 PROJECT = emq_recon
 PROJECT_DESCRIPTION = Recon Plugin
-PROJECT_VERSION = 2.0
+PROJECT_VERSION = 2.0.1
 
 DEPS = recon
 
