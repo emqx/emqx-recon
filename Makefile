@@ -1,13 +1,13 @@
 PROJECT = emq_recon
 PROJECT_DESCRIPTION = Recon Plugin
-PROJECT_VERSION = 2.0.1
+PROJECT_VERSION = 2.0.5
 
 DEPS = recon
 
 dep_recon = git https://github.com/ferd/recon 2.2.1
 
 BUILD_DEPS = emqttd cuttlefish
-dep_emqttd = git https://github.com/emqtt/emqttd emq20
+dep_emqttd = git https://github.com/emqtt/emqttd master
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 CT_SUITES = emq_recon
@@ -21,4 +21,3 @@ app:: rebar.config
 
 app.config::
 	./deps/cuttlefish/cuttlefish -l info -e etc/ -c etc/emq_recon.conf -i priv/emq_recon.schema -d data
-
