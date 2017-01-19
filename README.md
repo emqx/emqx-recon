@@ -1,6 +1,6 @@
 
-emqttd_recon
-============
+emq-recon
+=========
 
 Recon debug/optimize plugin
 
