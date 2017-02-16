@@ -16,9 +16,9 @@
 
 -module(emq_recon_gc).
 
--author("Feng Lee <feng@emqtt.io>").
-
 -behaviour(gen_server).
+
+-author("Feng Lee <feng@emqtt.io>").
 
 %% API.
 -export([start_link/0, run/0]).

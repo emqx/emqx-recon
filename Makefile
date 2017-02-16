@@ -13,6 +13,8 @@ dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 CT_SUITES = emq_recon
 CT_OPTS = -erl_args -config test/config/sys.config
 
+NO_AUTOPATCH = cuttlefish
+
 COVER = true
 
 include erlang.mk

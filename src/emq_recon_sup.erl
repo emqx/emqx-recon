@@ -16,9 +16,9 @@
 
 -module(emq_recon_sup).
 
--author("Feng Lee <feng@emqtt.io>").
-
 -behaviour(supervisor).
+
+-author("Feng Lee <feng@emqtt.io>").
 
 -export([start_link/0]).
 

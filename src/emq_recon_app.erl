@@ -16,9 +16,9 @@
 
 -module(emq_recon_app).
 
--author("Feng Lee <feng@emqtt.io>").
-
 -behaviour(application).
+
+-author("Feng Lee <feng@emqtt.io>").
 
 %% Application callbacks
 -export([start/2, stop/1]).
