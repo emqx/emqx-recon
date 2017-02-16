@@ -1,10 +1,10 @@
 PROJECT = emq_recon
 PROJECT_DESCRIPTION = Recon Plugin
-PROJECT_VERSION = 2.0.7
+PROJECT_VERSION = 2.1
 
 DEPS = recon
 
-dep_recon = git https://github.com/ferd/recon 2.2.1
+dep_recon = git https://github.com/ferd/recon 2.3.2
 
 BUILD_DEPS = emqttd cuttlefish
 dep_emqttd = git https://github.com/emqtt/emqttd master
@@ -12,6 +12,8 @@ dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 CT_SUITES = emq_recon
 CT_OPTS = -erl_args -config test/config/sys.config
+
+NO_AUTOPATCH = cuttlefish
 
 COVER = true
 
