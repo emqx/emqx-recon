@@ -34,7 +34,8 @@ groups() ->
     ].
 
 init_per_suite(Config) ->
-    [{ok, _} = application:ensure_all_started(App) || App <- [lager, emqttd, emq_recon]],
+    DataDir = proplists:get_value(data_dir, Config),
+    Apps = [start_apps(App, DataDir) || App <- [emqttd, emq_recon]],
     Config.
 
 end_per_suite(_Config) ->
@@ -63,3 +64,10 @@ gc_run(_) ->
     {ok, Micros} = emq_recon_gc:run(),
     io:format("GC: ~p~n", [Micros]).
 
+start_apps(App, DataDir) ->
+    Schema = cuttlefish_schema:files([filename:join([DataDir, atom_to_list(App) ++ ".schema"])]),
+    Conf = conf_parse:file(filename:join([DataDir, atom_to_list(App) ++ ".conf"])),
+    NewConfig = cuttlefish_generator:map(Schema, Conf),
+    Vals = proplists:get_value(App, NewConfig),
+    [application:set_env(App, Par, Value) || {Par, Value} <- Vals],
+    application:ensure_all_started(App).
