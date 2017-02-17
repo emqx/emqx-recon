@@ -21,3 +21,5 @@ emqttd_recon.iml
 Mnesia.nonode@nohost/
 data/
 emq_recon.d
+cover/
+eunit.coverdata
