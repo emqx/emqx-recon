@@ -1,5 +1,5 @@
 %%--------------------------------------------------------------------
-%% Copyright (c) 2016-2017 Feng Lee <feng@emqtt.io>. All Rights Reserved.
+%% Copyright (c) 2013-2017 EMQ Enterprise, Inc. (http://emqtt.io)
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 -module(emq_recon_gc).
 
--author("Feng Lee <feng@emqtt.io>").
-
 -behaviour(gen_server).
+
+-author("Feng Lee <feng@emqtt.io>").
 
 %% API.
 -export([start_link/0, run/0]).
@@ -46,8 +46,8 @@ run() ->
 
 init([]) ->
     case application:get_env(emq_recon, gc_interval) of
-        {ok, Secs} -> {ok, schedule_gc(#state{interval = Secs * 1000})};
-        undefined  -> {ok, #state{}}
+        {ok, Ms}  -> {ok, schedule_gc(#state{interval = Ms})};
+        undefined -> {ok, #state{}}
     end.
 
 handle_call(run, _From, State) ->
