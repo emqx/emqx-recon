@@ -3,7 +3,6 @@ PROJECT_DESCRIPTION = Recon Plugin
 PROJECT_VERSION = 2.2
 
 DEPS = recon
-
 dep_recon = git https://github.com/ferd/recon 2.3.2
 
 BUILD_DEPS = emqttd cuttlefish
@@ -11,6 +10,9 @@ dep_emqttd = git https://github.com/emqtt/emqttd emq22
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 NO_AUTOPATCH = cuttlefish
+
+ERLC_OPTS += +debug_info
+ERLC_OPTS += +'{parse_transform, lager_transform}'
 
 COVER = true
 
