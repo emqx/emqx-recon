@@ -13,22 +13,33 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 %%--------------------------------------------------------------------
+-module (emq_recon_config).
 
--module(emq_recon_app).
+-define(APP, emq_recon).
 
--behaviour(application).
+-export ([register/0, unregister/0]).
 
--author("Feng Lee <feng@emqtt.io>").
+register() ->
+    clique_config:load_schema([code:priv_dir(?APP)], ?APP),
+    register_config().
 
-%% Application callbacks
--export([start/2, stop/1]).
+unregister() ->
+    unregister_config(),
+    clique_config:unload_schema(?APP).
 
-start(_StartType, _StartArgs) ->
-    emq_recon_cli:load(),
-    emq_recon_config:register(),
-    emq_recon_sup:start_link().
+register_config() ->
+    Keys = keys(),
+    [clique:register_config(Key , fun config_callback/2) || Key <- Keys],
+    clique:register_config_whitelist(Keys, ?APP).
 
-stop(_State) ->
-    emq_recon_cli:unload(),
-    emq_recon_config:unregister().
+config_callback([_, Key], Value) ->
+    application:set_env(?APP, list_to_atom(Key), Value),
+    " successfully\n".
 
+unregister_config() ->
+    Keys = keys(),
+    [clique:unregister_config(Key) || Key <- Keys],
+    clique:unregister_config_whitelist(Keys, ?APP).
+
+keys() ->
+    ["recon.gc_interval"].

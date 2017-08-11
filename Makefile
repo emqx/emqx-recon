@@ -2,8 +2,9 @@ PROJECT = emq_recon
 PROJECT_DESCRIPTION = Recon Plugin
 PROJECT_VERSION = 2.3
 
-DEPS = recon
-dep_recon = git https://github.com/ferd/recon 2.3.2
+DEPS = recon clique
+dep_recon  = git https://github.com/ferd/recon 2.3.2
+dep_clique = git https://github.com/turtleDeng/clique
 
 BUILD_DEPS = emqttd cuttlefish
 dep_emqttd = git https://github.com/emqtt/emqttd develop
