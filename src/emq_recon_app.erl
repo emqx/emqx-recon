@@ -25,8 +25,10 @@
 
 start(_StartType, _StartArgs) ->
     emq_recon_cli:load(),
+    emq_recon_config:register(),
     emq_recon_sup:start_link().
 
 stop(_State) ->
-    emq_recon_cli:unload().
+    emq_recon_cli:unload(),
+    emq_recon_config:unregister().
 
