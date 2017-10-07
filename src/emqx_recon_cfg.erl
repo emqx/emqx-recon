@@ -13,9 +13,9 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 %%--------------------------------------------------------------------
--module (emq_recon_config).
+-module (emqx_recon_cfg).
 
--define(APP, emq_recon).
+-define(APP, emqx_recon).
 
 -export ([register/0, unregister/0]).
 

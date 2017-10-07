@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_recon_sup).
+-module(emqx_recon_sup).
 
 -behaviour(supervisor).
 
@@ -30,5 +30,5 @@ start_link() ->
 	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 init([]) ->
-	{ok, {{one_for_one, 10, 100}, [?CHILD(emq_recon_gc)]}}.
+	{ok, {{one_for_one, 10, 100}, [?CHILD(emqx_recon_gc)]}}.
 

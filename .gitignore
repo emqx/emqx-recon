@@ -23,3 +23,4 @@ data/
 emq_recon.d
 cover/
 eunit.coverdata
+.DS_Store

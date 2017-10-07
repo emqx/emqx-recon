@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_recon_gc).
+-module(emqx_recon_gc).
 
 -behaviour(gen_server).
 
@@ -45,7 +45,7 @@ run() ->
 %%--------------------------------------------------------------------
 
 init([]) ->
-    case application:get_env(emq_recon, gc_interval) of
+    case application:get_env(emqx_recon, gc_interval) of
         {ok, Ms}  -> {ok, schedule_gc(#state{interval = Ms})};
         undefined -> {ok, #state{}}
     end.

@@ -14,16 +14,16 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_recon_cli).
+-module(emqx_recon_cli).
 
 -author("Feng Lee <feng@emqtt.io>").
 
--include_lib("emqttd/include/emqttd_cli.hrl").
+-include_lib("emqx/include/emqx_macros.hrl").
 
 -export([load/0, cmd/1, unload/0]).
 
 load() ->
-    emqttd_ctl:register_cmd(recon, {?MODULE, cmd}, []).
+    emqx_ctl:register_cmd(recon, {?MODULE, cmd}, []).
 
 cmd(["memory"]) ->
     Print = fun(Key, Keyword) ->
@@ -58,7 +58,7 @@ cmd(_) ->
             {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
 
 unload() ->
-    emqttd_ctl:unregister_cmd(recon).
+    emqx_ctl:unregister_cmd(recon).
 
 concat(Key, Keyword) ->
     lists:concat([atom_to_list(Key), "/", atom_to_list(Keyword)]).

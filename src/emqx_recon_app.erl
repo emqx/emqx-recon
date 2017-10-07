@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_recon_app).
+-module(emqx_recon_app).
 
 -behaviour(application).
 
@@ -24,11 +24,11 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    emq_recon_cli:load(),
-    emq_recon_config:register(),
-    emq_recon_sup:start_link().
+    emqx_recon_cli:load(),
+    emqx_recon_cfg:register(),
+    emqx_recon_sup:start_link().
 
 stop(_State) ->
-    emq_recon_cli:unload(),
-    emq_recon_config:unregister().
+    emqx_recon_cli:unload(),
+    emqx_recon_cfg:unregister().
 

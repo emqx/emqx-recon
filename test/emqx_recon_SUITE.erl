@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emq_recon_SUITE).
+-module(emqx_recon_SUITE).
 
 -compile(export_all).
 
@@ -35,33 +35,33 @@ groups() ->
 
 init_per_suite(Config) ->
     DataDir = proplists:get_value(data_dir, Config),
-    Apps = [start_apps(App, DataDir) || App <- [emqttd, emq_recon]],
+    [start_apps(App, DataDir) || App <- [emqx, emqx_recon]],
     Config.
 
 end_per_suite(_Config) ->
-    application:stop(emq_recon),
-    application:stop(emqttd).
+    application:stop(emqx_recon),
+    application:stop(emqx).
 
 cli_memory(_) ->
-    emq_recon_cli:cmd(["memory"]).
+    emqx_recon_cli:cmd(["memory"]).
 
 cli_allocated(_) ->
-    emq_recon_cli:cmd(["allocated"]).
+    emqx_recon_cli:cmd(["allocated"]).
     
 cli_bin_leak(_) ->
-    emq_recon_cli:cmd(["bin_leak"]).
+    emqx_recon_cli:cmd(["bin_leak"]).
 
 cli_node_stats(_) ->
-    emq_recon_cli:cmd(["node_stats"]).
+    emqx_recon_cli:cmd(["node_stats"]).
 
 cli_remote_load(_) ->
-    emq_recon_cli:cmd(["remote_load", "emq_recon_gc"]).
+    emqx_recon_cli:cmd(["remote_load", "emqx_recon_gc"]).
 
 cli_usage(_) ->
-    emq_recon_cli:cmd(["usage"]).
+    emqx_recon_cli:cmd(["usage"]).
 
 gc_run(_) ->
-    {ok, Micros} = emq_recon_gc:run(),
+    {ok, Micros} = emqx_recon_gc:run(),
     io:format("GC: ~p~n", [Micros]).
 
 start_apps(App, DataDir) ->

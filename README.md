@@ -1,21 +1,21 @@
 
-emq-recon
-=========
+emqx-recon
+==========
 
-Recon debug/optimize plugin
+EMQ X Recon debug/optimize plugin
 
 Load the Plugin
 ---------------
 
 ```
-./bin/emqttd_ctl plugins load emq_recon
+./bin/emqx_ctl plugins load emqx_recon
 ```
 
 Commands
 --------
 
 ```
-./bin/emqttd_ctl recon
+./bin/emqx_ctl recon
 
 recon memory                            #recon_alloc:memory/2
 recon allocated                         #recon_alloc:memory(allocated_types, current|max)
