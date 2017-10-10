@@ -20,7 +20,7 @@ test/ct.cover.spec
 emqttd_recon.iml
 Mnesia.nonode@nohost/
 data/
-emq_recon.d
+emqx_recon.d
 cover/
 eunit.coverdata
 .DS_Store

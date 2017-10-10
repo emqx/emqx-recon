@@ -18,7 +18,7 @@
 
 -author("Feng Lee <feng@emqtt.io>").
 
--include_lib("emqx/include/emqx_macros.hrl").
+-include_lib("emqx/include/emqx_cli.hrl").
 
 -export([load/0, cmd/1, unload/0]).
 
