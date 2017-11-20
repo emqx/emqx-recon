@@ -7,7 +7,7 @@ dep_recon  = git https://github.com/ferd/recon 2.3.2
 dep_clique = git https://github.com/emqtt/clique
 
 BUILD_DEPS = emqx cuttlefish
-dep_emqx = git git@github.com:emqx/emqx develop
+dep_emqx = git git@github.com:emqx/emqx X
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 NO_AUTOPATCH = cuttlefish
