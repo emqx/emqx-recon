@@ -17,10 +17,10 @@ logs/
 ct.coverdata
 test/ct.cover.spec
 .idea/
-emqttd_recon.iml
+emqx_recon.iml
 Mnesia.nonode@nohost/
 data/
-emqx_recon.d
 cover/
+emqx_recon.d
 eunit.coverdata
 .DS_Store

@@ -1,13 +1,13 @@
 PROJECT = emqx_recon
 PROJECT_DESCRIPTION = EMQ X Recon Plugin
-PROJECT_VERSION = 2.4
+PROJECT_VERSION = 2.3.0
 
 DEPS = recon clique
 dep_recon  = git https://github.com/ferd/recon 2.3.2
 dep_clique = git https://github.com/emqtt/clique
 
 BUILD_DEPS = emqx cuttlefish
-dep_emqx = git https://github.com/emqtt/emqttd X
+dep_emqx = git git@github.com:emqx/emqx develop
 dep_cuttlefish = git https://github.com/emqtt/cuttlefish
 
 NO_AUTOPATCH = cuttlefish

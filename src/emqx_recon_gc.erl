@@ -52,7 +52,7 @@ init([]) ->
 
 handle_call(run, _From, State) ->
     {Time, _} = timer:tc(fun run_gc/0),
-	{reply, {ok,Time}, State};
+    {reply, {ok,Time}, State};
 
 handle_call(_Req, _From, State) ->
 	{reply, ok, State}.
