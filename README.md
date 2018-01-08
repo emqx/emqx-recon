@@ -4,6 +4,26 @@ emqx-recon
 
 EMQ X Recon debug/optimize plugin
 
+emq_recon.conf
+--------------
+
+```
+## Global GC Interval.
+##
+## Value: Duration
+##  - h: hour
+##  - m: minute
+##  - s: second
+##
+## Examples:
+##  - 2h:  2 hours
+##  - 30m: 30 minutes
+##  - 20s: 20 seconds
+##
+## Defaut: 5m
+recon.gc_interval = 5m
+```
+
 Load the Plugin
 ---------------
 

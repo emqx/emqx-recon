@@ -1,6 +1,6 @@
 PROJECT = emqx_recon
 PROJECT_DESCRIPTION = EMQ X Recon Plugin
-PROJECT_VERSION = 2.4
+PROJECT_VERSION = 2.4.1
 
 DEPS = recon clique
 dep_recon  = git https://github.com/ferd/recon 2.3.2
