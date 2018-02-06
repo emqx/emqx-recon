@@ -1,5 +1,5 @@
 %%--------------------------------------------------------------------
-%% Copyright (c) 2013-2017 EMQ Enterprise, Inc. (http://emqtt.io)
+%% Copyright (c) 2013-2018 EMQ Enterprise, Inc. (http://emqtt.io)
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -16,21 +16,24 @@
 
 -module(emqx_recon_gc).
 
--behaviour(gen_server).
-
 -author("Feng Lee <feng@emqtt.io>").
+
+-behaviour(gen_server).
 
 %% API.
 -export([start_link/0, run/0]).
 
-%% gen_server.
+%% gen_server
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--record(state, {interval}).
+-record(state, {timer}).
+
+%% 5 minutes
+-define(DEFAULT_INTERVAL, 300000).
 
 %%--------------------------------------------------------------------
-%% Start the gc
+%% Start the GC server
 %%--------------------------------------------------------------------
 
 -spec(start_link() -> {ok, pid()}).
@@ -38,24 +41,21 @@ start_link() ->
 	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 run() ->
-    gen_server:call(?MODULE, run).
+    gen_server:call(?MODULE, run, infinity).
 
 %%--------------------------------------------------------------------
-%% gen_server callbacks
+%% gen_server Callbacks
 %%--------------------------------------------------------------------
 
 init([]) ->
-    case application:get_env(emqx_recon, gc_interval) of
-        {ok, Ms}  -> {ok, schedule_gc(#state{interval = Ms})};
-        undefined -> {ok, #state{}}
-    end.
+    {ok, schedule_gc(#state{})}.
 
 handle_call(run, _From, State) ->
     {Time, _} = timer:tc(fun run_gc/0),
-    {reply, {ok,Time}, State};
+    {reply, {ok, Time}, State, hibernate};
 
 handle_call(_Req, _From, State) ->
-	{reply, ok, State}.
+	{reply, ignore, State}.
 
 handle_cast(_Msg, State) ->
 	{noreply, State}.
@@ -77,10 +77,10 @@ code_change(_OldVsn, State, _Extra) ->
 %% Internel function
 %%--------------------------------------------------------------------
 
-schedule_gc(#state{interval = Interval} = State) ->
-    erlang:send_after(Interval, self(), run), State.
+schedule_gc(State) ->
+    Interval = application:get_env(emqx_recon, gc_interval, ?DEFAULT_INTERVAL),
+    State#state{timer = erlang:send_after(Interval, self(), run)}.
 
 run_gc() ->
-    [garbage_collect(P) || P <- processes(),
-                           {status, waiting} == process_info(P, status)].
+    [garbage_collect(P) || P <- processes(), {status, waiting} == process_info(P, status)].
 

@@ -1,5 +1,5 @@
 %%--------------------------------------------------------------------
-%% Copyright (c) 2013-2017 EMQ Enterprise, Inc. (http://emqtt.io)
+%% Copyright (c) 2013-2018 EMQ Enterprise, Inc. (http://emqtt.io)
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@
 
 -author("Feng Lee <feng@emqtt.io>").
 
--include_lib("emqx/include/emqx_cli.hrl").
-
 -export([load/0, cmd/1, unload/0]).
 
 load() ->
@@ -27,35 +25,32 @@ load() ->
 
 cmd(["memory"]) ->
     Print = fun(Key, Keyword) ->
-                ?PRINT("~-20s: ~w~n", [concat(Key, Keyword),
-                                       recon_alloc:memory(Key, Keyword)])
+              emqx_ctl:print("~-20s: ~w~n", [concat(Key, Keyword), recon_alloc:memory(Key, Keyword)])
             end,
-    [Print(Key, Keyword) || Key <- [usage, used, allocated, unused],
-                            Keyword <- [current, max]];
+    [Print(Key, Keyword) || Key <- [usage, used, allocated, unused], Keyword <- [current, max]];
 
 cmd(["allocated"]) ->
     Print = fun(Keyword, Key, Val) ->
-                ?PRINT("~-20s: ~w~n", [concat(Key, Keyword), Val])
+              emqx_ctl:print("~-20s: ~w~n", [concat(Key, Keyword), Val])
             end,
     Alloc = fun(Keyword) -> recon_alloc:memory(allocated_types, Keyword) end,
-    [Print(Keyword, Key, Val) || Keyword <- [current, max],
-                                 {Key, Val} <- Alloc(Keyword)];
+    [Print(Keyword, Key, Val) || Keyword <- [current, max], {Key, Val} <- Alloc(Keyword)];
 
 cmd(["bin_leak"]) ->
-    [?PRINT("~p~n", [Row]) || Row <- recon:bin_leak(100)];
+    [emqx_ctl:print("~p~n", [Row]) || Row <- recon:bin_leak(100)];
 
 cmd(["node_stats"]) ->
     recon:node_stats_print(10, 1000);
 
 cmd(["remote_load", Mod]) ->
-    ?PRINT("~p~n", [recon:remote_load(list_to_atom(Mod))]);
+    emqx_ctl:print("~p~n", [recon:remote_load(list_to_atom(Mod))]);
 
 cmd(_) ->
-    ?USAGE([{"recon memory",          "recon_alloc:memory/2"},
-            {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
-            {"recon bin_leak",        "recon:bin_leak(100)"},
-            {"recon node_stats",      "recon:node_stats(10, 1000)"},
-            {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
+    emqx_ctl:usage([{"recon memory",          "recon_alloc:memory/2"},
+                    {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
+                    {"recon bin_leak",        "recon:bin_leak(100)"},
+                    {"recon node_stats",      "recon:node_stats(10, 1000)"},
+                    {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
 
 unload() ->
     emqx_ctl:unregister_cmd(recon).

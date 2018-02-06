@@ -2,10 +2,10 @@
 emqx-recon
 ==========
 
-EMQ X Recon debug/optimize plugin
+EMQ X Recon Debug/Optimize Plugin
 
-emq_recon.conf
---------------
+emqx_recon.conf
+----=----------
 
 ```
 ## Global GC Interval.
