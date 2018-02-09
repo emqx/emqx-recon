@@ -16,8 +16,6 @@
 
 -module(emqx_recon_cli).
 
--author("Feng Lee <feng@emqtt.io>").
-
 -export([load/0, cmd/1, unload/0]).
 
 load() ->
