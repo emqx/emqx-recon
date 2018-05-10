@@ -1,24 +1,23 @@
-%%--------------------------------------------------------------------
-%% Copyright (c) 2013-2018 EMQ Enterprise, Inc. (http://emqtt.io)
-%%
-%% Licensed under the Apache License, Version 2.0 (the "License");
-%% you may not use this file except in compliance with the License.
-%% You may obtain a copy of the License at
-%%
-%%     http://www.apache.org/licenses/LICENSE-2.0
-%%
-%% Unless required by applicable law or agreed to in writing, software
-%% distributed under the License is distributed on an "AS IS" BASIS,
-%% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-%% See the License for the specific language governing permissions and
-%% limitations under the License.
-%%--------------------------------------------------------------------
+%%%===================================================================
+%%% Copyright (c) 2013-2018 EMQ Inc. All rights reserved.
+%%%
+%%% Licensed under the Apache License, Version 2.0 (the "License");
+%%% you may not use this file except in compliance with the License.
+%%% You may obtain a copy of the License at
+%%%
+%%%     http://www.apache.org/licenses/LICENSE-2.0
+%%%
+%%% Unless required by applicable law or agreed to in writing, software
+%%% distributed under the License is distributed on an "AS IS" BASIS,
+%%% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+%%% See the License for the specific language governing permissions and
+%%% limitations under the License.
+%%%===================================================================
 
 -module(emqx_recon_gc).
 
 -behaviour(gen_server).
 
-%% API.
 -export([start_link/0, run/0]).
 
 %% gen_server
@@ -30,10 +29,6 @@
 %% 5 minutes
 -define(DEFAULT_INTERVAL, 300000).
 
-%%--------------------------------------------------------------------
-%% Start the GC server
-%%--------------------------------------------------------------------
-
 -spec(start_link() -> {ok, pid()}).
 start_link() ->
 	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
@@ -42,7 +37,7 @@ run() ->
     gen_server:call(?MODULE, run, infinity).
 
 %%--------------------------------------------------------------------
-%% gen_server Callbacks
+%% gen_server callbacks
 %%--------------------------------------------------------------------
 
 init([]) ->
@@ -80,5 +75,6 @@ schedule_gc(State) ->
     State#state{timer = erlang:send_after(Interval, self(), run)}.
 
 run_gc() ->
-    [garbage_collect(P) || P <- processes(), {status, waiting} == process_info(P, status)].
+    [garbage_collect(P) || P <- processes(),
+                           {status, waiting} == process_info(P, status)].
 
