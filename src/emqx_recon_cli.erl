@@ -47,7 +47,7 @@ cmd(_) ->
                     {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
 
 unload() ->
-    emqx_cli:unregister_command(recon).
+    emqx_ctl:unregister_command(recon).
 
 concat(Key, Keyword) ->
     lists:concat([atom_to_list(Key), "/", atom_to_list(Keyword)]).

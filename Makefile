@@ -3,13 +3,13 @@ PROJECT_DESCRIPTION = EMQ X Recon Plugin
 PROJECT_VERSION = 3.0
 
 DEPS = recon
-dep_recon = git https://github.com/ferd/recon 2.3.5
+dep_recon = git https://github.com/ferd/recon 2.3.6
 
 BUILD_DEPS = emqx
-dep_emqx = git git@github.com:emqtt/emqttd emqx30
+dep_emqx = git https://github.com:emqtt/emqttd emqx30
 
 TEST_DEPS = emqx_ct_helpers
-dep_emqx_ct_helpers = git git@github.com:emqx/emqx-ct-helpers
+dep_emqx_ct_helpers = git https://github.com:emqx/emqx-ct-helpers
 
 NO_AUTOPATCH = cuttlefish
 

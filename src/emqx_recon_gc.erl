@@ -16,20 +16,19 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, run/0]).
+-export([start_link/0]).
+-export([run/0]).
 
 %% gen_server
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2,
          code_change/3]).
-
--record(state, {timer}).
 
 %% 5 minutes
 -define(DEFAULT_INTERVAL, 300000).
 
 -spec(start_link() -> {ok, pid()}).
 start_link() ->
-	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 run() ->
     gen_server:call(?MODULE, run, infinity).
@@ -39,30 +38,30 @@ run() ->
 %%--------------------------------------------------------------------
 
 init([]) ->
-    {ok, schedule_gc(#state{})}.
+    {ok, schedule_gc(#{timer => undefined})}.
 
 handle_call(run, _From, State) ->
     {Time, _} = timer:tc(fun run_gc/0),
     {reply, {ok, Time}, State, hibernate};
 
 handle_call(_Req, _From, State) ->
-	{reply, ignored, State}.
+    {reply, ignored, State}.
 
 handle_cast(_Msg, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 handle_info(run, State) ->
     run_gc(),
-	{noreply, schedule_gc(State), hibernate};
+    {noreply, schedule_gc(State), hibernate};
 
 handle_info(_Info, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 terminate(_Reason, _State) ->
-	ok.
+    ok.
 
 code_change(_OldVsn, State, _Extra) ->
-	{ok, State}.
+    {ok, State}.
 
 %%--------------------------------------------------------------------
 %% Internel function
@@ -70,7 +69,7 @@ code_change(_OldVsn, State, _Extra) ->
 
 schedule_gc(State) ->
     Interval = application:get_env(emqx_recon, gc_interval, ?DEFAULT_INTERVAL),
-    State#state{timer = erlang:send_after(Interval, self(), run)}.
+    State#{timer := erlang:send_after(Interval, self(), run)}.
 
 run_gc() ->
     [garbage_collect(P) || P <- processes(),

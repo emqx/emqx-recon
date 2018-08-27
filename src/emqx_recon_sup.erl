@@ -20,11 +20,15 @@
 
 -export([init/1]).
 
--define(CHILD(I), {I, {I, start_link, []}, permanent, 5000, worker, [I]}).
-
 start_link() ->
 	supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 init([]) ->
-	{ok, {{one_for_one, 10, 100}, [?CHILD(emqx_recon_gc)]}}.
+	{ok, {{one_for_one, 10, 100},
+          [#{id       => recon_gc,
+             start    => {emqx_recon_gc, start_link, []},
+             restart  => permanent,
+             shutdown => 5000,
+             type     => worker,
+             modules  => [emqx_recon_gc]}]}}.
 
