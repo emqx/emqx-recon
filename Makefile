@@ -15,7 +15,6 @@ NO_AUTOPATCH = cuttlefish
 
 ERLC_OPTS += +debug_info
 ERLC_OPTS += +warnings_as_errors +warn_export_all +warn_unused_import
-ERLC_OPTS += +'{parse_transform, lager_transform}'
 
 COVER = true
 
