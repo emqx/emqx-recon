@@ -1,6 +1,7 @@
 PROJECT = emqx_recon
 PROJECT_DESCRIPTION = EMQ X Recon Plugin
 PROJECT_VERSION = 3.0
+PROJECT_MOD = emqx_recon_app
 
 DEPS = recon
 dep_recon = git-emqx https://github.com/ferd/recon 2.3.6
@@ -17,12 +18,7 @@ ERLC_OPTS += +debug_info
 ERLC_OPTS += +warnings_as_errors +warn_export_all +warn_unused_import
 
 COVER = true
-
-define dep_fetch_git-emqx
-	git clone -q --depth 1 -b $(call dep_commit,$(1)) -- $(call dep_repo,$(1)) $(DEPS_DIR)/$(call dep_name,$(1)) > /dev/null 2>&1; \
-	cd $(DEPS_DIR)/$(call dep_name,$(1));
-endef
-
+$(shell [ -f erlang.mk ] || curl -s -o erlang.mk https://raw.githubusercontent.com/emqx/erlmk/master/erlang.mk)
 include erlang.mk
 
 app:: rebar.config
