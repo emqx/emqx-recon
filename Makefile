@@ -1,7 +1,7 @@
 PROJECT = emqx_recon
 PROJECT_DESCRIPTION = EMQ X Recon Plugin
 PROJECT_VERSION = 3.0
-PROJECT_MOD = emqx_recon_app
+PROJECT_MOD = emqx_recon
 
 DEPS = recon
 dep_recon = git-emqx https://github.com/ferd/recon 2.3.6
