@@ -24,3 +24,7 @@ cover/
 emqx_recon.d
 eunit.coverdata
 .DS_Store
+_build/
+rebar.lock
+erlang.mk
+rebar3.crashdump
