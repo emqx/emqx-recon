@@ -15,16 +15,28 @@
 -module(emqx_recon).
 
 -behaviour(application).
-
 -export([start/2, stop/1]).
 
+-behaviour(supervisor).
+-export([init/1]).
+
 -define(APP, ?MODULE).
+-define(SUP, emqx_recon_sup).
 
 start(_StartType, _StartArgs) ->
     emqx_recon_cli:load(),
     emqx_config:populate(?APP),
-    emqx_recon_sup:start_link().
+    supervisor:start_link({local, ?SUP}, ?MODULE, []).
 
 stop(_State) ->
     emqx_recon_cli:unload().
+
+init([]) ->
+    GC = #{id => recon_gc,
+           start => {emqx_recon_gc, start_link, []},
+           restart => permanent,
+           shutdown => 5000,
+           type => worker,
+           modules => [emqx_recon_gc]},
+	{ok, {{one_for_one, 10, 100}, [GC]}}.
 
