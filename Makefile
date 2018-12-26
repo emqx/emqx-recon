@@ -1,25 +1,27 @@
-PROJECT = emq_recon
-PROJECT_DESCRIPTION = Recon Plugin
-PROJECT_VERSION = 2.3.11
+PROJECT = emqx_recon
+PROJECT_DESCRIPTION = EMQ X Recon Plugin
+PROJECT_VERSION = 3.0
+PROJECT_MOD = emqx_recon
 
-DEPS = recon clique
-dep_recon  = git https://github.com/ferd/recon 2.3.2
-dep_clique = git https://github.com/emqtt/clique v0.3.10
+DEPS = recon
+dep_recon = git-emqx https://github.com/ferd/recon 2.3.6
 
-BUILD_DEPS = emqttd cuttlefish
-dep_emqttd = git https://github.com/emqtt/emqttd master
-dep_cuttlefish = git https://github.com/emqtt/cuttlefish v2.0.11
+BUILD_DEPS = emqx
+dep_emqx = git-emqx https://github.com/emqx/emqx master
+
+TEST_DEPS = emqx_ct_helpers
+dep_emqx_ct_helpers = git https://github.com/emqx/emqx-ct-helpers
 
 NO_AUTOPATCH = cuttlefish
 
 ERLC_OPTS += +debug_info
-ERLC_OPTS += +'{parse_transform, lager_transform}'
+ERLC_OPTS += +warnings_as_errors +warn_export_all +warn_unused_import
 
 COVER = true
-
+$(shell [ -f erlang.mk ] || curl -s -o erlang.mk https://raw.githubusercontent.com/emqx/erlmk/master/erlang.mk)
 include erlang.mk
 
 app:: rebar.config
 
 app.config::
-	./deps/cuttlefish/cuttlefish -l info -e etc/ -c etc/emq_recon.conf -i priv/emq_recon.schema -d data
+	./deps/cuttlefish/cuttlefish -l info -e etc/ -c etc/emqx_recon.conf -i priv/emqx_recon.schema -d data

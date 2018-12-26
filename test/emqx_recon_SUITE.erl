@@ -1,5 +1,4 @@
-%%--------------------------------------------------------------------
-%% Copyright (c) 2013-2018 EMQ Enterprise, Inc. (http://emqtt.io)
+%% Copyright (c) 2018 EMQ Technologies Co., Ltd. All Rights Reserved.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -12,9 +11,8 @@
 %% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
-%%--------------------------------------------------------------------
 
--module(emq_recon_SUITE).
+-module(emqx_recon_SUITE).
 
 -compile(export_all).
 
@@ -35,34 +33,34 @@ groups() ->
 
 init_per_suite(Config) ->
     DataDir = proplists:get_value(data_dir, Config),
-    Apps = [start_apps(App, DataDir) || App <- [emqttd, emq_recon]],
+    [start_apps(App, DataDir) || App <- [emqx, emqx_recon]],
     Config.
 
 end_per_suite(_Config) ->
-    application:stop(emq_recon),
-    application:stop(emqttd).
+    application:stop(emqx_recon),
+    application:stop(emqx).
 
 cli_memory(_) ->
-    emq_recon_cli:cmd(["memory"]).
+    emqx_recon_cli:cmd(["memory"]).
 
 cli_allocated(_) ->
-    emq_recon_cli:cmd(["allocated"]).
-    
+    emqx_recon_cli:cmd(["allocated"]).
+
 cli_bin_leak(_) ->
-    emq_recon_cli:cmd(["bin_leak"]).
+    emqx_recon_cli:cmd(["bin_leak"]).
 
 cli_node_stats(_) ->
-    emq_recon_cli:cmd(["node_stats"]).
+    emqx_recon_cli:cmd(["node_stats"]).
 
 cli_remote_load(_) ->
-    emq_recon_cli:cmd(["remote_load", "emq_recon_gc"]).
+    emqx_recon_cli:cmd(["remote_load", "emqx_recon_gc"]).
 
 cli_usage(_) ->
-    emq_recon_cli:cmd(["usage"]).
+    emqx_recon_cli:cmd(["usage"]).
 
 gc_run(_) ->
-    {ok, Micros} = emq_recon_gc:run(),
-    io:format("GC: ~p~n", [Micros]).
+    {ok, Micros} = emqx_recon_gc:run(),
+    ct:print("GC: ~p~n", [Micros]).
 
 start_apps(App, DataDir) ->
     Schema = cuttlefish_schema:files([filename:join([DataDir, atom_to_list(App) ++ ".schema"])]),
@@ -71,3 +69,4 @@ start_apps(App, DataDir) ->
     Vals = proplists:get_value(App, NewConfig),
     [application:set_env(App, Par, Value) || {Par, Value} <- Vals],
     application:ensure_all_started(App).
+

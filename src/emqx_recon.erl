@@ -1,5 +1,4 @@
-%%--------------------------------------------------------------------
-%% Copyright (c) 2013-2018 EMQ Enterprise, Inc. (http://emqtt.io)
+%% Copyright (c) 2018 EMQ Technologies Co., Ltd. All Rights Reserved.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -12,23 +11,32 @@
 %% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
-%%--------------------------------------------------------------------
 
--module(emq_recon_app).
+-module(emqx_recon).
 
 -behaviour(application).
-
--author("Feng Lee <feng@emqtt.io>").
-
-%% Application callbacks
 -export([start/2, stop/1]).
 
+-behaviour(supervisor).
+-export([init/1]).
+
+-define(APP, ?MODULE).
+-define(SUP, emqx_recon_sup).
+
 start(_StartType, _StartArgs) ->
-    emq_recon_cli:load(),
-    emq_recon_config:register(),
-    emq_recon_sup:start_link().
+    emqx_recon_cli:load(),
+    emqx_config:populate(?APP),
+    supervisor:start_link({local, ?SUP}, ?MODULE, []).
 
 stop(_State) ->
-    emq_recon_cli:unload(),
-    emq_recon_config:unregister().
+    emqx_recon_cli:unload().
+
+init([]) ->
+    GC = #{id => recon_gc,
+           start => {emqx_recon_gc, start_link, []},
+           restart => permanent,
+           shutdown => 5000,
+           type => worker,
+           modules => [emqx_recon_gc]},
+	{ok, {{one_for_one, 10, 100}, [GC]}}.
 
