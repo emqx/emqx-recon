@@ -7,7 +7,7 @@ DEPS = recon
 dep_recon = git-emqx https://github.com/ferd/recon 2.3.6
 
 BUILD_DEPS = emqx
-dep_emqx = git-emqx https://github.com/emqx/emqx testing
+dep_emqx = git-emqx https://github.com/emqx/emqx develop
 
 TEST_DEPS = emqx_ct_helpers
 dep_emqx_ct_helpers = git https://github.com/emqx/emqx-ct-helpers
