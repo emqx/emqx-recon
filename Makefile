@@ -10,7 +10,7 @@ CUR_BRANCH := $(shell git branch | grep -e "^*" | cut -d' ' -f 2)
 BRANCH := $(if $(filter $(CUR_BRANCH), master develop testing), $(CUR_BRANCH), testing)
 
 BUILD_DEPS = emqx
-dep_emqx = git-emqx https://github.com/emqx/emqx testing
+dep_emqx = git-emqx https://github.com/emqx/emqx $(BRANCH)
 
 NO_AUTOPATCH = cuttlefish
 
@@ -24,8 +24,8 @@ include erlang.mk
 
 CUTTLEFISH_SCRIPT = _build/default/lib/cuttlefish/cuttlefish
 
-app.config: $(CUTTLEFISH_SCRIPT) etc/emqx_management.conf
-	$(verbose) $(CUTTLEFISH_SCRIPT) -l info -e etc/ -c etc/emqx_management.conf -i priv/emqx_management.schema -d data
+app.config: $(CUTTLEFISH_SCRIPT) etc/emqx_recon.conf
+	$(verbose) $(CUTTLEFISH_SCRIPT) -l info -e etc/ -c etc/emqx_recon.conf -i priv/emqx_recon.schema -d data
 
 $(CUTTLEFISH_SCRIPT): rebar-deps
 	@if [ ! -f cuttlefish ]; then make -C _build/default/lib/cuttlefish; fi
