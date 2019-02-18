@@ -1,8 +1,7 @@
-{application, emqx_recon, [
-    {description, "EMQ X Recon Plugin"},
-    {vsn, "git"},
-    {modules, ['emqx_recon','emqx_recon_cli','emqx_recon_gc']},
-    {mod, {emqx_recon, []}},
-    {registered, []},
-    {applications, [kernel,stdlib,recon]}
-]}.
+{application,emqx_recon,
+             [{description,"EMQ X Recon Plugin"},
+              {vsn,"git"},
+              {modules,[]},
+              {mod,{emqx_recon,[]}},
+              {registered,[]},
+              {applications,[kernel,stdlib,recon]}]}.
