@@ -1,6 +1,5 @@
 PROJECT = emqx_recon
 PROJECT_DESCRIPTION = EMQ X Recon Plugin
-PROJECT_VERSION = 3.1
 PROJECT_MOD = emqx_recon
 
 DEPS = recon
