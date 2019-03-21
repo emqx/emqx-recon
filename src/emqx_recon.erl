@@ -14,6 +14,8 @@
 
 -module(emqx_recon).
 
+-emqx_plugin(?MODULE).
+
 -behaviour(application).
 -export([start/2, stop/1]).
 
