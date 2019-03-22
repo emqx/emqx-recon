@@ -14,7 +14,10 @@
 
 -module(emqx_recon_cli).
 
--export([load/0, cmd/1, unload/0]).
+-export([ cmd/1
+        , load/0
+        , unload/0
+        ]).
 
 load() ->
     emqx_ctl:register_command(recon, {?MODULE, cmd}, []).
