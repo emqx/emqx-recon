@@ -17,14 +17,24 @@
 -behaviour(gen_server).
 
 -export([start_link/0]).
+
 -export([run/0]).
 
 %% gen_server
--export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2,
-         code_change/3]).
+-export([ init/1
+        , handle_call/3
+        , handle_cast/2
+        , handle_info/2
+        , terminate/2
+        , code_change/3
+        ]).
 
 %% 5 minutes
 -define(DEFAULT_INTERVAL, 300000).
+
+%%------------------------------------------------------------------------------
+%% APIs
+%%------------------------------------------------------------------------------
 
 -spec(start_link() -> {ok, pid()}).
 start_link() ->
@@ -33,9 +43,9 @@ start_link() ->
 run() ->
     gen_server:call(?MODULE, run, infinity).
 
-%%--------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 %% gen_server callbacks
-%%--------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 
 init([]) ->
     {ok, schedule_gc(#{timer => undefined})}.
@@ -63,9 +73,9 @@ terminate(_Reason, _State) ->
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
-%%--------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 %% Internel function
-%%--------------------------------------------------------------------
+%%------------------------------------------------------------------------------
 
 schedule_gc(State) ->
     Interval = application:get_env(emqx_recon, gc_interval, ?DEFAULT_INTERVAL),

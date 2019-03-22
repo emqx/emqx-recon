@@ -14,10 +14,14 @@
 
 -module(emqx_recon).
 
+-emqx_plugin(?MODULE).
+
 -behaviour(application).
+
 -export([start/2, stop/1]).
 
 -behaviour(supervisor).
+
 -export([init/1]).
 
 -define(APP, ?MODULE).
