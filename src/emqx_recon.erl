@@ -29,7 +29,6 @@
 
 start(_StartType, _StartArgs) ->
     emqx_recon_cli:load(),
-    emqx_config:populate(?APP),
     supervisor:start_link({local, ?SUP}, ?MODULE, []).
 
 stop(_State) ->
