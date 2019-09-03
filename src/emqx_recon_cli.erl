@@ -26,30 +26,30 @@ load() ->
 
 cmd(["memory"]) ->
     Print = fun(Key, Keyword) ->
-              emqx_cli:print("~-20s: ~w~n", [concat(Key, Keyword), recon_alloc:memory(Key, Keyword)])
+              emqx_mgmt:print("~-20s: ~w~n", [concat(Key, Keyword), recon_alloc:memory(Key, Keyword)])
             end,
     [Print(Key, Keyword) || Key <- [usage, used, allocated, unused], Keyword <- [current, max]];
 
 cmd(["allocated"]) ->
-    Print = fun(Keyword, Key, Val) -> emqx_cli:print("~-20s: ~w~n", [concat(Key, Keyword), Val]) end,
+    Print = fun(Keyword, Key, Val) -> emqx_mgmt:print("~-20s: ~w~n", [concat(Key, Keyword), Val]) end,
     Alloc = fun(Keyword) -> recon_alloc:memory(allocated_types, Keyword) end,
     [Print(Keyword, Key, Val) || Keyword <- [current, max], {Key, Val} <- Alloc(Keyword)];
 
 cmd(["bin_leak"]) ->
-    [emqx_cli:print("~p~n", [Row]) || Row <- recon:bin_leak(100)];
+    [emqx_mgmt:print("~p~n", [Row]) || Row <- recon:bin_leak(100)];
 
 cmd(["node_stats"]) ->
     recon:node_stats_print(10, 1000);
 
 cmd(["remote_load", Mod]) ->
-    emqx_cli:print("~p~n", [recon:remote_load(list_to_atom(Mod))]);
+    emqx_mgmt:print("~p~n", [recon:remote_load(list_to_atom(Mod))]);
 
 cmd(_) ->
-    emqx_cli:usage([{"recon memory",          "recon_alloc:memory/2"},
-                    {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
-                    {"recon bin_leak",        "recon:bin_leak(100)"},
-                    {"recon node_stats",      "recon:node_stats(10, 1000)"},
-                    {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
+    emqx_mgmt:usage([{"recon memory",          "recon_alloc:memory/2"},
+                     {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
+                     {"recon bin_leak",        "recon:bin_leak(100)"},
+                     {"recon node_stats",      "recon:node_stats(10, 1000)"},
+                     {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
 
 unload() ->
     emqx_ctl:unregister_command(recon).
