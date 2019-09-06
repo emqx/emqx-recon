@@ -1,4 +1,5 @@
-%% Copyright (c) 2013-2019 EMQ Technologies Co., Ltd. All Rights Reserved.
+%%--------------------------------------------------------------------
+%% Copyright (c) 2019 EMQ Technologies Co., Ltd. All Rights Reserved.
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -11,6 +12,7 @@
 %% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
+%%--------------------------------------------------------------------
 
 -module(emqx_recon_gc).
 
@@ -32,9 +34,9 @@
 %% 5 minutes
 -define(DEFAULT_INTERVAL, 300000).
 
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 %% APIs
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 
 -spec(start_link() -> {ok, pid()}).
 start_link() ->
@@ -43,9 +45,9 @@ start_link() ->
 run() ->
     gen_server:call(?MODULE, run, infinity).
 
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 %% gen_server callbacks
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 
 init([]) ->
     {ok, schedule_gc(#{timer => undefined})}.
@@ -73,9 +75,9 @@ terminate(_Reason, _State) ->
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 %% Internel function
-%%------------------------------------------------------------------------------
+%%--------------------------------------------------------------------
 
 schedule_gc(State) ->
     Interval = application:get_env(emqx_recon, gc_interval, ?DEFAULT_INTERVAL),
