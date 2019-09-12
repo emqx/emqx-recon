@@ -18,6 +18,10 @@
 
 -compile(export_all).
 
+-include_lib("eunit/include/eunit.hrl").
+
+-define(output_patterns(V), ((V)++"")).
+
 all() ->
     [{group, cli}, {group, gc}].
 
@@ -43,13 +47,52 @@ end_per_suite(_Config) ->
     application:stop(emqx).
 
 cli_memory(_) ->
-    emqx_recon_cli:cmd(["memory"]).
+    print_mock(),
+    Output = emqx_recon_cli:cmd(["memory"]),
+    Zip = lists:zip(Output, [ ?output_patterns("usage/current")
+                            , ?output_patterns("usage/max")
+                            , ?output_patterns("used/current")
+                            , ?output_patterns("used/max")
+                            , ?output_patterns("allocated/current")
+                            , ?output_patterns("allocated/max")
+                            , ?output_patterns("unused/current")
+                            , ?output_patterns("unused/max")
+                            ]),
+    %ct:pal("=======~p", [Zip]),
+    [?assertMatch({match, _}, re:run(Line, Match, [{capture,all,list}]))
+     || {Line, Match} <- Zip].
 
 cli_allocated(_) ->
-    emqx_recon_cli:cmd(["allocated"]).
+    print_mock(),
+    Output = emqx_recon_cli:cmd(["allocated"]),
+    Zip = lists:zip(Output, [ ?output_patterns("binary_alloc/current")
+                            , ?output_patterns("driver_alloc/current")
+                            , ?output_patterns("eheap_alloc/current")
+                            , ?output_patterns("ets_alloc/current")
+                            , ?output_patterns("fix_alloc/current")
+                            , ?output_patterns("ll_alloc/current")
+                            , ?output_patterns("sl_alloc/current")
+                            , ?output_patterns("std_alloc/current")
+                            , ?output_patterns("temp_alloc/current")
+                            , ?output_patterns("binary_alloc/max")
+                            , ?output_patterns("driver_alloc/max")
+                            , ?output_patterns("eheap_alloc/max")
+                            , ?output_patterns("ets_alloc/max")
+                            , ?output_patterns("fix_alloc/max")
+                            , ?output_patterns("ll_alloc/max")
+                            , ?output_patterns("sl_alloc/max")
+                            , ?output_patterns("std_alloc/max")
+                            , ?output_patterns("temp_alloc/max")
+                            ]),
+    ct:pal("=======~p", [Zip]),
+    [?assertMatch({match, _}, re:run(Line, Match, [{capture,all,list}]))
+     || {Line, Match} <- Zip].
 
 cli_bin_leak(_) ->
-    emqx_recon_cli:cmd(["bin_leak"]).
+    print_mock(),
+    Output = emqx_recon_cli:cmd(["bin_leak"]),
+    [?assertMatch({match, _}, re:run(Line, "current_function", [{capture,all,list}]))
+     || Line <- Output].
 
 cli_node_stats(_) ->
     emqx_recon_cli:cmd(["node_stats"]).
@@ -72,3 +115,8 @@ start_apps(App, DataDir) ->
     [application:set_env(App, Par, Value) || {Par, Value} <- Vals],
     application:ensure_all_started(App).
 
+print_mock() ->
+    meck:new(emqx_ctl, [non_strict, passthrough]),
+    meck:expect(emqx_ctl, print, fun(Arg) -> emqx_ctl:format(Arg) end),
+    meck:expect(emqx_ctl, print, fun(Msg, Arg) -> emqx_ctl:format(Msg, Arg) end),
+    meck:expect(emqx_ctl, usage, fun(Usages) -> emqx_ctl:format_usage(Usages) end).
