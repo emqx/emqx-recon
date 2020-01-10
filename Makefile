@@ -16,6 +16,9 @@ ct:
 xref:
 	$(REBAR) xref
 
+cover:
+	$(REBAR) cover
+
 dialyzer:
 	$(REBAR) dialyzer
 
