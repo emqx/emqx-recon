@@ -37,11 +37,5 @@ stop(_State) ->
     emqx_recon_cli:unload().
 
 init([]) ->
-    GC = #{id => recon_gc,
-           start => {emqx_recon_gc, start_link, []},
-           restart => permanent,
-           shutdown => 5000,
-           type => worker,
-           modules => [emqx_recon_gc]},
-	{ok, {{one_for_one, 10, 100}, [GC]}}.
+    {ok, {{one_for_one, 10, 100}, []}}.
 
