@@ -44,12 +44,16 @@ cmd(["node_stats"]) ->
 cmd(["remote_load", Mod]) ->
     emqx_ctl:print("~p~n", [recon:remote_load(list_to_atom(Mod))]);
 
+cmd(["proc_count", Attr, N]) ->
+    emqx_ctl:print("~p~n", [recon:proc_count(list_to_atom(Attr), list_to_integer(N))]);
+
 cmd(_) ->
-    emqx_ctl:usage([{"recon memory",          "recon_alloc:memory/2"},
-                     {"recon allocated",       "recon_alloc:memory(allocated_types, current|max)"},
-                     {"recon bin_leak",        "recon:bin_leak(100)"},
-                     {"recon node_stats",      "recon:node_stats(10, 1000)"},
-                     {"recon remote_load Mod", "recon:remote_load(Mod)"}]).
+    emqx_ctl:usage([{"recon memory",           "recon_alloc:memory/2"},
+                    {"recon allocated",        "recon_alloc:memory(allocated_types, current|max)"},
+                    {"recon bin_leak",         "recon:bin_leak(100)"},
+                    {"recon node_stats",       "recon:node_stats(10, 1000)"},
+                    {"recon remote_load Mod",  "recon:remote_load(Mod)"},
+                    {"recon proc_count Attr N","recon:proc_count(Attr, N)"}]).
 
 unload() ->
     emqx_ctl:unregister_command(recon).
