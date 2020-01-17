@@ -22,8 +22,7 @@
 
 -define(output_patterns(V), ((V)++"")).
 
-all() ->
-    [{group, cli}, {group, gc}].
+all() -> [{group, cli}].
 
 groups() ->
     [{cli, [sequence],
@@ -32,9 +31,7 @@ groups() ->
        cli_bin_leak,
        cli_node_stats,
        cli_remote_load,
-       cli_usage]},
-     {gc, [sequence],
-      [gc_run]}
+       cli_usage]}
     ].
 
 init_per_suite(Config) ->
@@ -98,14 +95,10 @@ cli_node_stats(_) ->
     emqx_recon_cli:cmd(["node_stats"]).
 
 cli_remote_load(_) ->
-    emqx_recon_cli:cmd(["remote_load", "emqx_recon_gc"]).
+    emqx_recon_cli:cmd(["remote_load", "emqx_recon_cli"]).
 
 cli_usage(_) ->
     emqx_recon_cli:cmd(["usage"]).
-
-gc_run(_) ->
-    {ok, Micros} = emqx_recon_gc:run(),
-    ct:print("GC: ~p~n", [Micros]).
 
 start_apps(App, DataDir) ->
     Schema = cuttlefish_schema:files([filename:join([DataDir, atom_to_list(App) ++ ".schema"])]),
@@ -120,3 +113,4 @@ print_mock() ->
     meck:expect(emqx_ctl, print, fun(Arg) -> emqx_ctl:format(Arg) end),
     meck:expect(emqx_ctl, print, fun(Msg, Arg) -> emqx_ctl:format(Msg, Arg) end),
     meck:expect(emqx_ctl, usage, fun(Usages) -> emqx_ctl:format_usage(Usages) end).
+
